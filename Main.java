@@ -77,7 +77,7 @@ public class Main {
             System.out.println("Acepta el AF la cadena " + cad + "? " + acepta + "\nTiempo de simulacion: " + finalTime + " nanosegundos.");
 
             // Impresion del AFD minimizado
-            System.out.println("\n\nDescripcion del AFD connstruido directamtne, minimizado:");
+            System.out.println("\n\nDescripcion del AFD connstruido directamente, minimizado:");
             description[1] = myAfdMinimized_DC.afdDescription();
             for (String s: description[1])
                 System.out.println(s);

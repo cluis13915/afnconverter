@@ -39,7 +39,7 @@ public class DirectConverter {
                 index++;
                 subTrees.push(new TreeNode(s, index));
             }
-            else if(s.equals(".") || s.equals("|")){
+            else if(s.equals(".") || s.equals("+")){
                 newNode = new TreeNode(s, -1);
                 auxNode1 = subTrees.pop();
                 newNode.setLeftNode(subTrees.pop());
@@ -80,7 +80,7 @@ public class DirectConverter {
             node.setLastPos(auxNodes);
         }
         // Propiedades de un nodo OR
-        else if (node.getValue().equals("|")){
+        else if (node.getValue().equals("+")){
             node.setNullable(this.isNullable(node.getLeftNode()) || this.isNullable(node.getRightNode()));
             // Conjunto firstpos para el nodo
             auxNodes = new HashSet();
@@ -250,7 +250,7 @@ public class DirectConverter {
     }
 
     private void searchSymbols(String regexp){
-        String specialChars = "*|.&";
+        String specialChars = "*+.&";
         symbols = new ArrayList();
         // Simbolos del alfabeto
         for (String s: regexp.split(""))

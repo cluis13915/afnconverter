@@ -99,7 +99,7 @@ public class Tools {
     private String depurar(String s) {
         s = s.replaceAll("\\s+", ""); //Elimina espacios en blanco
         s = "(" + s + ")";
-        String simbols = "*|().";
+        String simbols = "*+().";
         String str = "";
 
         //Deja espacios entre operadores
@@ -114,7 +114,7 @@ public class Tools {
         int prf = 99;
         if (op.equals("*")) prf = 5;
         if (op.equals(".")) prf = 4;
-        if (op.equals("|")) prf = 3;
+        if (op.equals("+")) prf = 3;
         if (op.equals(")")) prf = 2;
         if (op.equals("(")) prf = 1;
         return prf;
@@ -126,16 +126,21 @@ public class Tools {
         String symbols = "", sp, s;
         //Busqueda de los simbolos
         for (int i=0; i<regexp.length(); i++)
-            if (!"|*( )".contains(String.valueOf(regexp.charAt(i))) && !symbols.contains(String.valueOf(regexp.charAt(i))))
+            if (!"+*( )".contains(String.valueOf(regexp.charAt(i))) && !symbols.contains(String.valueOf(regexp.charAt(i))))
                 symbols += String.valueOf(regexp.charAt(i));
         //Adicion de los puntos
         for (int i=1; i<regexp.length(); i++){
             sp = (i>0)? String.valueOf(regexp.charAt(i-1)): "";     // anterior, siempre que no se esté en 0
             s = String.valueOf(regexp.charAt(i));           // actual
             if (!s.equals(" "))
-                if ((symbols.contains(sp) && symbols.contains(s)) || ("*)".contains(sp) && symbols.contains(s)) ||
-                    (symbols.contains(sp) && s.equals("(")) || (sp.equals(")") && s.equals("(")) || (sp.equals("*") && s.equals("(")))
-                        regexp = regexp.substring(0, i) + "." + regexp.substring(i, regexp.length());
+                if (
+                    (symbols.contains(sp) && symbols.contains(s))
+                    || ("*)".contains(sp) && symbols.contains(s))
+                    || (symbols.contains(sp) && s.equals("("))
+                    || (sp.equals(")") && s.equals("("))
+                    || (sp.equals("*") && s.equals("("))
+                )
+                    regexp = regexp.substring(0, i) + "." + regexp.substring(i, regexp.length());
         }
         return regexp;
     }
