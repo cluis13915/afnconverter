@@ -99,8 +99,8 @@ public class Main {
 
         // Generacion de los archivos
         try{
-            tool1.generateFile(description[0],"afdDirectConstructed1.txt");     // AFD construido directamente
-            tool1.generateFile(description[1], "afdMinimized2.txt");    // AFD construido directamente minimizado
+            tool1.generateFile(description[0],"afd.txt");     // AFD construido directamente
+            tool1.generateFile(description[1], "afd_minimizado.txt");    // AFD construido directamente minimizado
         }
         catch (Exception err){
             System.out.println("Ocurrió un error en la generacion de los archivos..!!");

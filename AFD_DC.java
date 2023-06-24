@@ -32,30 +32,39 @@ public class AFD_DC {
     public void setSymbols(ArrayList<String> symbols){
         this.symbols = symbols;
     }
+
     public void setStates(ArrayList<StateAFD_DC> states){
         this.states = states;
     }
+
     public void setInitialState(StateAFD_DC initialState){
         this.initialState = initialState;
     }
+
     public void setFinalStates(ArrayList<StateAFD_DC> finalStates){
         this.finalStates = finalStates;
     }
+
     public void setTransitions(ArrayList<TransitionAfd_DC> transitions){
         this.transitions = transitions;
     }
+
     public ArrayList<String> getSymbols(){
         return symbols;
     }
+
     public ArrayList<StateAFD_DC> getStates(){
         return states;
     }
+
     public StateAFD_DC getInitialState(){
         return initialState;
     }
+
     public ArrayList<StateAFD_DC> getFinalStates(){
         return finalStates;
     }
+
     public ArrayList<TransitionAfd_DC> getTransitions(){
         return transitions;
     }
@@ -95,71 +104,60 @@ public class AFD_DC {
                 }
     }
 
-
-
     // Metodos que retornan los atributos del AFN como tal
     public int getInitialStateToString(){
         return initialState.getLabel();
     }
-    public ArrayList<Integer> getFinalStateToString(){
-        ArrayList<Integer> output = new ArrayList<Integer>();
+
+    public String getFinalStateToString(){
+        String output = "";
+
         for (StateAFD_DC state: finalStates)
-            output.add(state.getLabel());
+            // Si ya tiene valor, agregamos una coma antes del estado. Si no, agregamos solo el estado.
+            output += (output.length()>0) ? ("," + state.getLabel()) : state.getLabel();
+
         return output;
     }
-    // Metodo para obtener todos los estados en un arreglo
-    public ArrayList<Integer> getStatesToString(){
-        ArrayList<Integer> output = new ArrayList<Integer>();
-        for (int i = 0; i<states.size(); i++)
-            output.add(states.get(i).getLabel());
-        return output;
-    }
+
     // Metodo para obtener todas las transiciones
     private ArrayList<String> getTransitionsToString(){
         ArrayList<String> output = new ArrayList<String>();
-        for (TransitionAfd_DC transition: transitions)
-            output.add("(" + String.valueOf(transition.getOrigin().getLabel()) + ", " + transition.getSymbol() + ", " + String.valueOf(transition.getDestination().getLabel()) + ")");
-        return output;
-    }
+        String symbolTransitions;
 
-    // Metodo para obtenner el codigo para el grafo del AF
-    public ArrayList<String> getDigraphCode(){
-        ArrayList<String> output = new ArrayList();
-        output.add("digraph G");
-        output.add("{");
-        output.add("rankdir = LR;");
-        for (StateAFD_DC s: states){
-            if (s.getIsInitial()){
-                output.add("init [shape = point];");
-                output.add("init -> " + s.getLabel() + " [label=\"start\"];");
-                output.add(String.valueOf(s.getLabel()) + ";");
-                if (s.getIsfinal())
-                    output.add(String.valueOf(s.getLabel()) + " [shape = doublecircle];");
+        for (int i = 0; i<symbols.size(); i++) {
+            symbolTransitions = "0";
+
+            for (TransitionAfd_DC transition: transitions) {
+                if (transition.getSymbol() == symbols.get(i)) {
+                    symbolTransitions += "," + String.valueOf(transition.getDestination().getLabel());
+                }
             }
-            else if (s.getIsfinal())
-                output.add(String.valueOf(s.getLabel()) + " [shape = doublecircle];");
-            else
-                output.add(String.valueOf(s.getLabel()) + ";");
+
+            // output.add("(" + String.valueOf(transition.getOrigin().getLabel()) + ", " + transition.getSymbol() + ", " + String.valueOf(transition.getDestination().getLabel()) + ")");
+            output.add(symbolTransitions);
         }
-        for (TransitionAfd_DC t: transitions)
-            output.add(String.valueOf(t.getOrigin().getLabel()) + " -> " + String.valueOf(t.getDestination().getLabel()) + " [label=\"" + t.getSymbol() + "\"];");
-        output.add("}");
+
         return output;
     }
 
-    // Metodo para obtener el afn completo
+    // Metodo para obtener la representacion del AFD
     public ArrayList<String> afdDescription(){
         ArrayList<String> output = new ArrayList();
-        output.add("ESTADOS: " + this.getStatesToString());
-        output.add("SIMBOLOS: " + symbols.toString());
-        output.add("INICIO: " + this.getInitialStateToString());
-        output.add("ACEPTACION: " + this.getFinalStateToString());
-        output.add("TRANCISIONES: " + this.getTransitionsToString());
+        // Unimos los simbolos por una coma.
+        output.add(String.join(",", symbols));
+        // Le sumamos 1 por el estado 0.
+        output.add(String.valueOf(this.states.size() + 1));
+        output.add(this.getFinalStateToString());
+
+        for (String transitionsString: this.getTransitionsToString()) {
+            output.add(transitionsString);
+        }
+
         return output;
     }
 
+    //************** SIMULACION DEL AFD **************
 
-        //************** SIMULACION DEL AFD **************
     public boolean simulateAFD(String string){
         Simulater simulater = new Simulater();
         boolean accept = simulater.simulateAFD(string);

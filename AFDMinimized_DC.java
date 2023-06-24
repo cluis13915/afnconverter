@@ -33,41 +33,49 @@ public class AFDMinimized_DC {
     public void setSymbols(ArrayList<String> symbols){
         this.symbols = symbols;
     }
+
     public void setStates(ArrayList<StateAfdMinimized_DC> states){
         this.states = states;
     }
+
     public void setInitialState(StateAfdMinimized_DC initialState){
         this.initialState = initialState;
     }
+
     public void setFinalStates(ArrayList<StateAfdMinimized_DC> finalStates){
         this.finalStates = finalStates;
     }
+
     public void setTransitions(ArrayList<TransitionAfdMinimized_DC> transitions){
         this.transitions = transitions;
     }
+
     public ArrayList<String> getSymbols(){
         return symbols;
     }
+
     public ArrayList<StateAfdMinimized_DC> getStates(){
         return states;
     }
+
     public StateAfdMinimized_DC getInitialState(){
         return initialState;
     }
+
     public ArrayList<StateAfdMinimized_DC> getFinalStates(){
         return finalStates;
     }
+
     public ArrayList<TransitionAfdMinimized_DC> getTransitions(){
         return transitions;
     }
+
     public boolean thereIsTransition(TransitionAfdMinimized_DC trans){
         for (TransitionAfdMinimized_DC t: transitions)
             if (t.getOrigin().equals(trans.getOrigin()) && t.getSymbol().equals(trans.getSymbol()) && t.getDestination().equals(trans.getDestination()))
                 return true;
         return false;
     }
-
-
 
     public void refreshAFD(){
         this.searchInitialStates();
@@ -103,18 +111,21 @@ public class AFDMinimized_DC {
                 }
     }
 
-
-
     // Metodos que retornan los atributos del AFN como tal
     public int getInitialStateToString(){
         return initialState.getLabel();
     }
-    public ArrayList<Integer> getFinalStateToString(){
-        ArrayList<Integer> output = new ArrayList();
+
+    public String getFinalStateToString(){
+        String output = "";
+
         for (StateAfdMinimized_DC state: finalStates)
-            output.add(state.getLabel());
+            // Si ya tiene valor, agregamos una coma antes del estado. Si no, agregamos solo el estado.
+            output += (output.length()>0) ? ("," + state.getLabel()) : state.getLabel();
+
         return output;
     }
+
     // Metodo para obtener todos los estados en un arreglo
     public ArrayList<Integer> getStatesToString(){
         ArrayList<Integer> output = new ArrayList<Integer>();
@@ -122,22 +133,41 @@ public class AFDMinimized_DC {
             output.add(states.get(i).getLabel());
         return output;
     }
+
     // Metodo para obtener todas las transiciones
     private ArrayList<String> getTransitionsToString(){
         ArrayList<String> output = new ArrayList<String>();
-        for (TransitionAfdMinimized_DC transition: transitions)
-            output.add("(" + String.valueOf(transition.getOrigin().getLabel()) + ", " + transition.getSymbol() + ", " + String.valueOf(transition.getDestination().getLabel()) + ")");
+        String symbolTransitions;
+
+        for (int i = 0; i<symbols.size(); i++) {
+            symbolTransitions = "0";
+
+            for (TransitionAfdMinimized_DC transition: transitions) {
+                if (transition.getSymbol() == symbols.get(i)) {
+                    symbolTransitions += "," + String.valueOf(transition.getDestination().getLabel());
+                }
+            }
+
+            // output.add("(" + String.valueOf(transition.getOrigin().getLabel()) + ", " + transition.getSymbol() + ", " + String.valueOf(transition.getDestination().getLabel()) + ")");
+            output.add(symbolTransitions);
+        }
+
         return output;
     }
 
-    // Metodo para obtener el afn completo
+    // Metodo para obtener la representacion del AFD minimizado
     public ArrayList<String> afdDescription(){
         ArrayList<String> output = new ArrayList();
-        output.add("ESTADOS: " + this.getStatesToString());
-        output.add("SIMBOLOS: " + symbols.toString());
-        output.add("INICIO: " + this.getInitialStateToString());
-        output.add("ACEPTACION: " + this.getFinalStateToString());
-        output.add("TRANCISIONES: " + this.getTransitionsToString());
+        // Unimos los simbolos por una coma.
+        output.add(String.join(",", symbols));
+        // Le sumamos 1 por el estado 0.
+        output.add(String.valueOf(this.states.size() + 1));
+        output.add(this.getFinalStateToString());
+
+        for (String transitionsString: this.getTransitionsToString()) {
+            output.add(transitionsString);
+        }
+
         return output;
     }
 
