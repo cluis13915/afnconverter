@@ -1,0 +1,43 @@
+/*
+	Autor: Cesar Luis, 12539
+	Descripcion: Implementación de los algoritmos básicos de autómatas finitos y expresiones regulares.
+	Fecha: 14 de agosto de 2014
+*/
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author timothy
+ */
+public class SuperState {
+    private int label;
+    private boolean isInitial;
+    private boolean isFinal;
+
+    public SuperState(){
+        isInitial = false;
+        isFinal = false;
+        label = -1;
+    }
+
+    public void setLabel(int label){
+        this.label = label;
+    }
+    public void setIsInitial(boolean value){
+        this.isInitial = value;
+    }
+    public void setIsfinal(boolean value){
+        this.isFinal = value;
+    }
+    public boolean getIsInitial(){
+        return isInitial;
+    }
+    public boolean getIsfinal(){
+        return isFinal;
+    }
+    public int getLabel(){
+        return label;
+    }
+
+}
