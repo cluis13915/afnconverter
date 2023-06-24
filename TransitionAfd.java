@@ -8,13 +8,13 @@
  *
  * @author timothy
  */
-public class TransitionAfd_DC {
+public class TransitionAfd {
     private String symbol;
-    private StateAFD_DC origin;
-    private StateAFD_DC destination;
+    private StateAFD origin;
+    private StateAFD destination;
 
-    public TransitionAfd_DC(){}
-    public TransitionAfd_DC (StateAFD_DC origin, String symbol, StateAFD_DC destination){
+    public TransitionAfd(){}
+    public TransitionAfd (StateAFD origin, String symbol, StateAFD destination){
         this.origin = origin;
         this.symbol = symbol;
         this.destination = destination;
@@ -23,10 +23,10 @@ public class TransitionAfd_DC {
     public String getSymbol(){
         return symbol;
     }
-    public StateAFD_DC getDestination(){
+    public StateAFD getDestination(){
         return destination;
     }
-    public StateAFD_DC getOrigin(){
+    public StateAFD getOrigin(){
         return origin;
     }
 

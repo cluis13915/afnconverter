@@ -148,20 +148,20 @@ public class DirectConverter {
         return false;
     }
 
-    public AFD_DC convert(String regexp){
+    public AFD convert(String regexp){
         TreeNode root = this.generateSintaxTree(regexp);    // Generate Sintax Tree
         this.findComponentsNodes(root);     // For each Sintax Tree node, find firstPos and last Pos
         this.findFollowPos(root);       // For each Sintax Tree node, find followPos
         //this.PreOrder_Method(root);
 
         // Construccion del AFD
-        StateAFD_DC U, S;
+        StateAFD U, S;
         int label = 1;
-        ArrayList<TransitionAfd_DC> Dtran = new ArrayList();
+        ArrayList<TransitionAfd> Dtran = new ArrayList();
 
         // Initialize Dstates to contain only the unmarked state firstpos(root)
-        ArrayList<StateAFD_DC> Dstates= new ArrayList();
-        U = new StateAFD_DC(label, true, false);
+        ArrayList<StateAFD> Dstates= new ArrayList();
+        U = new StateAFD(label, true, false);
         U.getNodes().addAll(root.getFirstPos());
         U.setMarked(false);
         Dstates.add(U);
@@ -173,14 +173,14 @@ public class DirectConverter {
             S.setMarked(true);      // mark S
             for (String a: symbols){        // for each imput symbol a
                 // let U be the union of followpos (p) for all p in S that correspond to a
-                U = new StateAFD_DC(label+1,false,false);
+                U = new StateAFD(label+1,false,false);
                 for (TreeNode node: S.getNodes()){
                     if (node.getValue().equals(a)){
                         U.getNodes().addAll(node.getFollowPos());
                     }
                 }
                 // if U is not in Dstates
-                StateAFD_DC auxState = this.contain(U, Dstates);
+                StateAFD auxState = this.contain(U, Dstates);
                 if (auxState == null){
                     label++;
                     Dstates.add(U);
@@ -188,12 +188,12 @@ public class DirectConverter {
                 else{
                     U = auxState;
                 }
-                Dtran.add(new TransitionAfd_DC(S,a,U));     // Dtran[S,a] = U
+                Dtran.add(new TransitionAfd(S,a,U));     // Dtran[S,a] = U
             }
 
             // Search for a new unmarked state in Dstates
             thereIsUnmarked = false;
-            for (StateAFD_DC state: Dstates){
+            for (StateAFD state: Dstates){
                 if (!state.isMarked()){
                     S = state;
                     thereIsUnmarked = true;
@@ -204,7 +204,7 @@ public class DirectConverter {
         }
 
         // Construct the AFD
-        AFD_DC afd = new AFD_DC();
+        AFD afd = new AFD();
         afd.setSymbols(symbols);
         afd.setStates(Dstates);
         afd.setTransitions(Dtran);
@@ -214,8 +214,8 @@ public class DirectConverter {
 
     }
 
-    private StateAFD_DC contain(StateAFD_DC state, ArrayList<StateAFD_DC> Dstates){
-        for (StateAFD_DC s: Dstates){
+    private StateAFD contain(StateAFD state, ArrayList<StateAFD> Dstates){
+        for (StateAFD s: Dstates){
             if (s.getNodes().containsAll(state.getNodes()) && state.getNodes().containsAll(s.getNodes()))
                 return s;
         }

@@ -27,8 +27,8 @@ public class Main {
         System.out.println(regexp);
         */
         DirectConverter myDirectConverter = new DirectConverter();
-        AFD_DC myAfd_DC = new AFD_DC();
-        AFDMinimized_DC myAfdMinimized_DC = new AFDMinimized_DC();
+        AFD myAfd = new AFD();
+        AFDMinimized myAfdMinimized = new AFDMinimized();
 
         ArrayList<String>[] description = new ArrayList[2];
         Tools tool1 = new Tools();
@@ -57,33 +57,33 @@ public class Main {
              =============================================================*/
             //regexp = "(a|b)*(abba*|(ab)*ba)";
             System.out.println("Construccion Directa del AFD a partir de la ER...");
-            myAfd_DC = myDirectConverter.convert(regexp);
+            myAfd = myDirectConverter.convert(regexp);
             System.out.println("Minimizacion del AFD construido directamente...");
-            myAfdMinimized_DC = myAfd_DC.minimizeAFD();    // Minimizacion del AFD
+            myAfdMinimized = myAfd.minimizeAFD();    // Minimizacion del AFD
 
             /*============================================================
              * Descripcion y Simulacion de los AF's
              =============================================================*/
             // Impresion del AFD construido directamente
             System.out.println("\n\nDescripcion del AFD construido directamente:");
-            description[0] = myAfd_DC.afdDescription();
+            description[0] = myAfd.afdDescription();
             for (String s: description[0])
                 System.out.println(s);
             // Simulacion del AFD construido directamente
             startTime = System.nanoTime();
-            accept = myAfd_DC.simulateAFD(cad);
+            accept = myAfd.simulateAFD(cad);
             finalTime = System.nanoTime() - startTime;
             acepta = accept? "SI": "NO";
             System.out.println("Acepta el AF la cadena " + cad + "? " + acepta + "\nTiempo de simulacion: " + finalTime + " nanosegundos.");
 
             // Impresion del AFD minimizado
             System.out.println("\n\nDescripcion del AFD connstruido directamente, minimizado:");
-            description[1] = myAfdMinimized_DC.afdDescription();
+            description[1] = myAfdMinimized.afdDescription();
             for (String s: description[1])
                 System.out.println(s);
             // Simulacion del AFD construido directamente
             startTime = System.nanoTime();
-            accept = myAfdMinimized_DC.simulateAFD(cad);
+            accept = myAfdMinimized.simulateAFD(cad);
             finalTime = System.nanoTime() - startTime;
             acepta = accept? "SI": "NO";
             System.out.println("Acepta el AF la cadena " + cad + "? " + acepta + "\nTiempo de simulacion: " + finalTime + " nanosegundos.");

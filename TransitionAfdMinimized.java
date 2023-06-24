@@ -8,13 +8,13 @@
  *
  * @author timothy
  */
-public class TransitionAfdMinimized_DC {
+public class TransitionAfdMinimized {
     private String symbol;
-    private StateAfdMinimized_DC origin;
-    private StateAfdMinimized_DC destination;
+    private StateAfdMinimized origin;
+    private StateAfdMinimized destination;
 
-    public TransitionAfdMinimized_DC(){}
-    public TransitionAfdMinimized_DC (StateAfdMinimized_DC origin, String symbol, StateAfdMinimized_DC destination){
+    public TransitionAfdMinimized(){}
+    public TransitionAfdMinimized (StateAfdMinimized origin, String symbol, StateAfdMinimized destination){
         this.origin = origin;
         this.symbol = symbol;
         this.destination = destination;
@@ -23,10 +23,10 @@ public class TransitionAfdMinimized_DC {
     public String getSymbol(){
         return symbol;
     }
-    public StateAfdMinimized_DC getDestination(){
+    public StateAfdMinimized getDestination(){
         return destination;
     }
-    public StateAfdMinimized_DC getOrigin(){
+    public StateAfdMinimized getOrigin(){
         return origin;
     }
     public String toString(){

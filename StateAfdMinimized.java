@@ -11,12 +11,12 @@ import java.util.HashSet;
  *
  * @author timothy
  */
-public class StateAfdMinimized_DC extends SuperState{
-    private ArrayList<StateAFD_DC> states;
-    private ArrayList<TransitionAfdMinimized_DC> transitions;
+public class StateAfdMinimized extends SuperState{
+    private ArrayList<StateAFD> states;
+    private ArrayList<TransitionAfdMinimized> transitions;
 
-    public StateAfdMinimized_DC(){}
-    public StateAfdMinimized_DC(int label, boolean isInitial, boolean isFinal){
+    public StateAfdMinimized(){}
+    public StateAfdMinimized(int label, boolean isInitial, boolean isFinal){
         super.setLabel(label);
         super.setIsInitial(isInitial);
         super.setIsfinal(isFinal);
@@ -24,25 +24,25 @@ public class StateAfdMinimized_DC extends SuperState{
         states = new ArrayList();
     }
 
-    public void addTransition(String symbol, StateAfdMinimized_DC destination){
-        TransitionAfdMinimized_DC transition = new TransitionAfdMinimized_DC(this, symbol, destination);
+    public void addTransition(String symbol, StateAfdMinimized destination){
+        TransitionAfdMinimized transition = new TransitionAfdMinimized(this, symbol, destination);
         transitions.add(transition);
     }
-    public ArrayList<TransitionAfdMinimized_DC> getTransitions(){
+    public ArrayList<TransitionAfdMinimized> getTransitions(){
         return transitions;
     }
-    public void setStates(ArrayList<StateAFD_DC> states){
+    public void setStates(ArrayList<StateAFD> states){
         this.states = states;
     }
-    public ArrayList<StateAFD_DC> getStates(){
+    public ArrayList<StateAFD> getStates(){
         return states;
     }
 
-    public void setSetStates(HashSet<StateAFD_DC> states){
+    public void setSetStates(HashSet<StateAFD> states){
         this.states.addAll(states);
     }
-    public HashSet<StateAFD_DC> getSetStates(){
-        HashSet<StateAFD_DC> s = new HashSet();
+    public HashSet<StateAFD> getSetStates(){
+        HashSet<StateAFD> s = new HashSet();
         s.addAll(states);
         return s;
     }

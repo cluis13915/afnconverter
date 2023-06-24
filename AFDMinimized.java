@@ -12,17 +12,17 @@ import java.util.Set;
  *
  * @author timothy
  */
-public class AFDMinimized_DC {
+public class AFDMinimized {
 
     private ArrayList<String> symbols;
-    private ArrayList<StateAfdMinimized_DC> states;
-    private StateAfdMinimized_DC initialState;
-    private ArrayList<StateAfdMinimized_DC> finalStates;
-    private ArrayList<TransitionAfdMinimized_DC> transitions;
+    private ArrayList<StateAfdMinimized> states;
+    private StateAfdMinimized initialState;
+    private ArrayList<StateAfdMinimized> finalStates;
+    private ArrayList<TransitionAfdMinimized> transitions;
     private int cont = 0;
 
     // Método Constructor
-    public AFDMinimized_DC(){
+    public AFDMinimized(){
         symbols = new ArrayList();
         states = new ArrayList();
         finalStates = new ArrayList();
@@ -34,19 +34,19 @@ public class AFDMinimized_DC {
         this.symbols = symbols;
     }
 
-    public void setStates(ArrayList<StateAfdMinimized_DC> states){
+    public void setStates(ArrayList<StateAfdMinimized> states){
         this.states = states;
     }
 
-    public void setInitialState(StateAfdMinimized_DC initialState){
+    public void setInitialState(StateAfdMinimized initialState){
         this.initialState = initialState;
     }
 
-    public void setFinalStates(ArrayList<StateAfdMinimized_DC> finalStates){
+    public void setFinalStates(ArrayList<StateAfdMinimized> finalStates){
         this.finalStates = finalStates;
     }
 
-    public void setTransitions(ArrayList<TransitionAfdMinimized_DC> transitions){
+    public void setTransitions(ArrayList<TransitionAfdMinimized> transitions){
         this.transitions = transitions;
     }
 
@@ -54,24 +54,24 @@ public class AFDMinimized_DC {
         return symbols;
     }
 
-    public ArrayList<StateAfdMinimized_DC> getStates(){
+    public ArrayList<StateAfdMinimized> getStates(){
         return states;
     }
 
-    public StateAfdMinimized_DC getInitialState(){
+    public StateAfdMinimized getInitialState(){
         return initialState;
     }
 
-    public ArrayList<StateAfdMinimized_DC> getFinalStates(){
+    public ArrayList<StateAfdMinimized> getFinalStates(){
         return finalStates;
     }
 
-    public ArrayList<TransitionAfdMinimized_DC> getTransitions(){
+    public ArrayList<TransitionAfdMinimized> getTransitions(){
         return transitions;
     }
 
-    public boolean thereIsTransition(TransitionAfdMinimized_DC trans){
-        for (TransitionAfdMinimized_DC t: transitions)
+    public boolean thereIsTransition(TransitionAfdMinimized trans){
+        for (TransitionAfdMinimized t: transitions)
             if (t.getOrigin().equals(trans.getOrigin()) && t.getSymbol().equals(trans.getSymbol()) && t.getDestination().equals(trans.getDestination()))
                 return true;
         return false;
@@ -85,9 +85,9 @@ public class AFDMinimized_DC {
 
     // Metodo que encuentra las transiciones para cada estado
     private void findTransitionsForState(){
-        for (StateAfdMinimized_DC s1: states)
-            for (StateAfdMinimized_DC s2: states)
-                for (TransitionAfdMinimized_DC t: transitions)
+        for (StateAfdMinimized s1: states)
+            for (StateAfdMinimized s2: states)
+                for (TransitionAfdMinimized t: transitions)
                     if (t.getOrigin().equals(s1) && t.getDestination().equals(s2))
                         s1.addTransition(t.getSymbol(), s2);
     }
@@ -95,7 +95,7 @@ public class AFDMinimized_DC {
     // Metodo para encontrar los estados finales del AFD
     private void searchInitialStates(){
         // Encontrar los estados finales
-        for (StateAfdMinimized_DC s1: states)
+        for (StateAfdMinimized s1: states)
             if (s1.getIsInitial())
                     this.initialState = s1;
     }
@@ -103,8 +103,8 @@ public class AFDMinimized_DC {
     // Metodo para encontrar los estados finales del AFD
     private void searchFinalStates(){
         // Encontrar los estados finales
-        for (StateAfdMinimized_DC s1: states)
-            for (StateAFD_DC s2: s1.getSetStates())
+        for (StateAfdMinimized s1: states)
+            for (StateAFD s2: s1.getSetStates())
                 if (s2.getIsfinal() && !finalStates.contains(s1)){
                     s1.setIsfinal(true);
                     finalStates.add(s1);
@@ -119,7 +119,7 @@ public class AFDMinimized_DC {
     public String getFinalStateToString(){
         String output = "";
 
-        for (StateAfdMinimized_DC state: finalStates)
+        for (StateAfdMinimized state: finalStates)
             // Si ya tiene valor, agregamos una coma antes del estado. Si no, agregamos solo el estado.
             output += (output.length()>0) ? ("," + state.getLabel()) : state.getLabel();
 
@@ -142,7 +142,7 @@ public class AFDMinimized_DC {
         for (int i = 0; i<symbols.size(); i++) {
             symbolTransitions = "0";
 
-            for (TransitionAfdMinimized_DC transition: transitions) {
+            for (TransitionAfdMinimized transition: transitions) {
                 if (transition.getSymbol() == symbols.get(i)) {
                     symbolTransitions += "," + String.valueOf(transition.getDestination().getLabel());
                 }
@@ -177,7 +177,7 @@ public class AFDMinimized_DC {
         output.add("digraph G");
         output.add("{");
         output.add("rankdir = LR;");
-        for (StateAfdMinimized_DC s: states){
+        for (StateAfdMinimized s: states){
             if (s.getIsInitial()){
                 output.add("init [shape = point];");
                 output.add("init -> " + s.getLabel() + " [label=\"start\"];");
@@ -190,7 +190,7 @@ public class AFDMinimized_DC {
             else
                 output.add(String.valueOf(s.getLabel()) + ";");
         }
-        for (TransitionAfdMinimized_DC t: transitions)
+        for (TransitionAfdMinimized t: transitions)
             output.add(String.valueOf(t.getOrigin().getLabel()) + " -> " + String.valueOf(t.getDestination().getLabel()) + " [label=\"" + t.getSymbol() + "\"];");
         output.add("}");
         return output;
@@ -211,8 +211,8 @@ public class AFDMinimized_DC {
 
         // Metodo para simular el AFN
         public boolean simulateAFD(String string){
-            HashSet<StateAfdMinimized_DC> currentStates = new HashSet();
-            HashSet<StateAfdMinimized_DC> auxStates  = new HashSet();
+            HashSet<StateAfdMinimized> currentStates = new HashSet();
+            HashSet<StateAfdMinimized> auxStates  = new HashSet();
 
             // El estado inicial es el estado inicial del automata
             currentStates.add(initialState);
@@ -229,7 +229,7 @@ public class AFDMinimized_DC {
             }
 
             // Si alguno de los estados finales es de aceptacion, la cadena es aceptada por el AFN
-            for (StateAfdMinimized_DC s2: currentStates){
+            for (StateAfdMinimized s2: currentStates){
                 if (s2.getIsfinal())
                     return true;
             }
@@ -237,11 +237,11 @@ public class AFDMinimized_DC {
         }
 
         //Hace las transiciiones de un conjunto de estados con un simbolo. Devuelve los estados alcanzados.
-        private HashSet<StateAfdMinimized_DC> move(HashSet<StateAfdMinimized_DC> states, String string){
-            HashSet<StateAfdMinimized_DC> moveResult = new HashSet();
+        private HashSet<StateAfdMinimized> move(HashSet<StateAfdMinimized> states, String string){
+            HashSet<StateAfdMinimized> moveResult = new HashSet();
             // Verificar para todas las transiciones del estado recibido
-            for (StateAfdMinimized_DC s1: states){
-                for (TransitionAfdMinimized_DC t: s1.getTransitions()){
+            for (StateAfdMinimized s1: states){
+                for (TransitionAfdMinimized t: s1.getTransitions()){
                     // Si hay una transicion con el simbolo recibido
                     if (t.getSymbol().equals(string)){
                         //System.out.println("Transición de " + string + " encontrada.");

@@ -10,16 +10,16 @@ import java.util.ArrayList;
  *
  * @author timothy
  */
-public class StateAFD_DC extends SuperState{
+public class StateAFD extends SuperState{
     private ArrayList<TreeNode> nodes;
     private boolean marked;
-    private ArrayList<TransitionAfd_DC> transitions;
+    private ArrayList<TransitionAfd> transitions;
 
-    public StateAFD_DC(){
+    public StateAFD(){
         nodes = new ArrayList();
         transitions = new ArrayList();
     }
-    public StateAFD_DC(int label, boolean isInitial, boolean isFinal){
+    public StateAFD(int label, boolean isInitial, boolean isFinal){
         super.setLabel(label);
         super.setIsInitial(isInitial);
         super.setIsfinal(isFinal);
@@ -28,8 +28,8 @@ public class StateAFD_DC extends SuperState{
         marked = false;
     }
 
-    public void addTransition(String symbol, StateAFD_DC destination){
-        TransitionAfd_DC transition = new TransitionAfd_DC(this, symbol, destination);
+    public void addTransition(String symbol, StateAFD destination){
+        TransitionAfd transition = new TransitionAfd(this, symbol, destination);
         transitions.add(transition);
     }
 
@@ -49,11 +49,11 @@ public class StateAFD_DC extends SuperState{
         this.marked = marked;
     }
 
-    public ArrayList<TransitionAfd_DC> getTransitions() {
+    public ArrayList<TransitionAfd> getTransitions() {
         return transitions;
     }
 
-    public void setTransitions(ArrayList<TransitionAfd_DC> transitions) {
+    public void setTransitions(ArrayList<TransitionAfd> transitions) {
         this.transitions = transitions;
     }
 
