@@ -24,7 +24,8 @@ hs_err_pid*
 replay_pid*
 
 # Generated files
-*.txt
+afd.txt
+afdMinimized.txt
 
 # Heavy Library to generat graphs
 graphviz 2.38
