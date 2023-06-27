@@ -10,16 +10,20 @@ public class Main {
     public static void main(String[] args) {
         if (args.length < 2) {
             System.out.println("Ingrese los argumentos requeridos.");
-
-            return;
+            System.exit(0);
         }
 
         String pathRegex = args[0];
         String modoEjecucion = args[1];
-        String archivoSalida;
+        String archivoSalida = "output.txt";
 
         if (args.length > 2) {
             archivoSalida = args[2];
+
+            if (archivoSalida.equals("")) {
+                System.out.println("Ingrese un nombre de archivo valido");
+                System.exit(0);
+            }
         }
 
         String alphabet, regex = "";
@@ -59,7 +63,7 @@ public class Main {
 
             try {
                 // Generar el archivo de descripcion del AFD
-                tool1.generateFile(description,"afd.txt");
+                tool1.generateFile(description, archivoSalida);
             }
             catch (Exception err) {
                 System.out.println("Ocurrió un error en la generacion del archivo");
@@ -85,7 +89,7 @@ public class Main {
 
             try {
                 // Generar el archivo de descripcion del AFD
-                tool1.generateFile(description,"afdMinimized.txt");
+                tool1.generateFile(description, archivoSalida);
             }
             catch (Exception err) {
                 System.out.println("Ocurrió un error en la generacion del archivo");
