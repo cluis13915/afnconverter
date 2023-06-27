@@ -1,110 +1,126 @@
-/*
-  Autor: Cesar Luis, 12539
-  Descripcion: Implementación de los algoritmos básicos de autómatas finitos y expresiones regulares.
-  Fecha: 14 de agosto de 2014
-*/
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author timothy
- */
 public class Main {
-
     public static void main(String[] args) {
-        /*
-        String regexp = "(a|b)*abb", cad;
-        Tools tool1 = new Tools();
-        regexp = tool1.postFix(regexp);
-        System.out.println(regexp);
-        */
-        DirectConverter myDirectConverter = new DirectConverter();
-        AFD myAfd = new AFD();
-        AFDMinimized myAfdMinimized = new AFDMinimized();
+        if (args.length < 2) {
+            System.out.println("Ingrese los argumentos requeridos.");
 
-        ArrayList<String>[] description = new ArrayList[2];
-        Tools tool1 = new Tools();
-        String regexp, cad, acepta;
-        boolean accept;
-        long startTime, finalTime;
+            return;
+        }
 
-        // Ingreso de la expresión regular
-        System.out.print("\nINSTRUCCIONES: \n\tUsar '()' para la prioridad de operaciones.\n\tUsar '|' para or\n\tUsar '*' para kleene\nIngrese la expresión regular: ");
-        Scanner leer = new Scanner(System.in);
-        regexp = leer.nextLine();
-        regexp = regexp.replace(" ", "");
-        regexp = tool1.postFix(regexp);
-        if (regexp.equals(null)){
-            System.out.println("Error en la Expresion regular. Intente de nuevo..!");
+        String pathRegex = args[0];
+        String modoEjecucion = args[1];
+        String archivoSalida;
+
+        if (args.length > 2) {
+            archivoSalida = args[2];
+        }
+
+        String alphabet, regex = "";
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(pathRegex));
+            alphabet = reader.readLine();
+            regex = reader.readLine();
+            reader.close();
+        }
+        catch (Exception err) {
+            System.out.println("Ocurrio un error al leer archivo");
             System.exit(0);
         }
-        System.out.print("Ingrese una cadena para la simulacion: ");
-        cad = leer.nextLine();
-        cad = cad.replace(" ", "");
 
-        // Conversión de la regexp
-        try{
-            /*============================================================
-             * Construccion, Conversion y Minimizacion de los AF's
-             =============================================================*/
-            //regexp = "(a|b)*(abba*|(ab)*ba)";
-            System.out.println("Construccion Directa del AFD a partir de la ER...");
-            myAfd = myDirectConverter.convert(regexp);
-            System.out.println("Minimizacion del AFD construido directamente...");
-            myAfdMinimized = myAfd.minimizeAFD();    // Minimizacion del AFD
+        DirectConverter converter = new DirectConverter();
+        AFD afd;
+        AFDMinimized afdMinimized;
 
-            /*============================================================
-             * Descripcion y Simulacion de los AF's
-             =============================================================*/
+        Tools tool1 = new Tools();
+        String cuerda = "", acepta;
+        boolean accept;
+        ArrayList<String> description;
+
+        regex = tool1.postFix(regex);
+
+        // Generar AFD
+        afd = converter.convert(regex);
+
+        if (modoEjecucion.equals("-afd")) {
+            description = afd.afdDescription();
+
             // Impresion del AFD construido directamente
-            System.out.println("\n\nDescripcion del AFD construido directamente:");
-            description[0] = myAfd.afdDescription();
-            for (String s: description[0])
+            System.out.println("Descripcion del AFD:");
+            for (String s: description)
                 System.out.println(s);
-            // Simulacion del AFD construido directamente
-            startTime = System.nanoTime();
-            accept = myAfd.simulateAFD(cad);
-            finalTime = System.nanoTime() - startTime;
-            acepta = accept? "SI": "NO";
-            System.out.println("Acepta el AF la cadena " + cad + "? " + acepta + "\nTiempo de simulacion: " + finalTime + " nanosegundos.");
+
+            try {
+                // Generar el archivo de descripcion del AFD
+                tool1.generateFile(description,"afd.txt");
+            }
+            catch (Exception err) {
+                System.out.println("Ocurrió un error en la generacion del archivo");
+                System.exit(0);
+            }
+        }
+
+        // Generar GLD
+        else if (modoEjecucion.equals("-gld")) {
+            System.out.println("Pendiente de implementar.");
+        }
+
+        // Minimizar AFD
+        else if (modoEjecucion.equals("-min")) {
+            // Aplicar el algoritmo de minimizacion sobre el AFD.
+            afdMinimized = afd.minimizeAFD();
+            description = afdMinimized.afdDescription();
 
             // Impresion del AFD minimizado
-            System.out.println("\n\nDescripcion del AFD connstruido directamente, minimizado:");
-            description[1] = myAfdMinimized.afdDescription();
-            for (String s: description[1])
+            System.out.println("Descripcion del AFD minimizado:");
+            for (String s: description)
                 System.out.println(s);
-            // Simulacion del AFD construido directamente
-            startTime = System.nanoTime();
-            accept = myAfdMinimized.simulateAFD(cad);
-            finalTime = System.nanoTime() - startTime;
-            acepta = accept? "SI": "NO";
-            System.out.println("Acepta el AF la cadena " + cad + "? " + acepta + "\nTiempo de simulacion: " + finalTime + " nanosegundos.");
-        }
-        catch (Exception err){
-            System.out.println("Ocurrio un error inesperado. Revise la sintaxis..!");
-            System.exit(0);
+
+            try {
+                // Generar el archivo de descripcion del AFD
+                tool1.generateFile(description,"afdMinimized.txt");
+            }
+            catch (Exception err) {
+                System.out.println("Ocurrió un error en la generacion del archivo");
+                System.exit(0);
+            }
         }
 
-        /*============================================================
-         * Generacion de los archivos de descripcion de los automatas.
-         =============================================================*/
+        // Evaluar cuerdas
+        else if (modoEjecucion.equals("-eval")) {
+            Scanner inputReader = new Scanner(System.in);
 
-        // Generacion de los archivos
-        try{
-            tool1.generateFile(description[0],"afd.txt");     // AFD construido directamente
-            tool1.generateFile(description[1], "afd_minimizado.txt");    // AFD construido directamente minimizado
+            while (true) {
+                System.out.print("Ingrese una cuerda para evaluar (exit para salir): ");
+                cuerda = inputReader.nextLine();
+
+                if (cuerda.equals("")) {
+                    continue;
+                }
+
+                if (cuerda.equals("exit")) {
+                    break;
+                }
+
+                cuerda = cuerda.replace(" ", "");
+
+                // Simulacion del AFD construido directamente
+                accept = afd.simulateAFD(cuerda);
+                acepta = accept ? "SI": "NO";
+                System.out.println("Acepta el AFD la cuerda " + cuerda + "? " + acepta);
+            }
         }
-        catch (Exception err){
-            System.out.println("Ocurrió un error en la generacion de los archivos..!!");
-            System.exit(0);
+
+        // Ejecucion invalida
+        else {
+            System.out.println("Modo de ejecucion invalida.");
         }
     }
 }
