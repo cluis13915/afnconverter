@@ -1,13 +1,3 @@
-/*
-	Autor: Cesar Luis, 12539
-	Descripcion: Implementación de los algoritmos básicos de autómatas finitos y expresiones regulares.
-	Fecha: 14 de agosto de 2014
-*/
-
-/**
- *
- * @author timothy
- */
 public class TransitionAfdMinimized {
     private String symbol;
     private StateAfdMinimized origin;

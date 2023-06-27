@@ -1,15 +1,3 @@
-/*
-	Autor: Cesar Luis, 12539
-	Descripcion: Implementación de los algoritmos básicos de autómatas finitos y expresiones regulares.
-	Fecha: 14 de agosto de 2014
-*/
-
-/**
- * Autor: Cesar Anibal Luis Alvarado
- * Descripcion: Herramientas
- * Fecha: 18 de julio de 2014
- */
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PrintWriter;

@@ -1,15 +1,5 @@
-/*
-	Autor: Cesar Luis, 12539
-	Descripcion: Implementación de los algoritmos básicos de autómatas finitos y expresiones regulares.
-	Fecha: 14 de agosto de 2014
-*/
-
 import java.util.ArrayList;
 
-/**
- *
- * @author timothy
- */
 public class StateAFD extends SuperState{
     private ArrayList<TreeNode> nodes;
     private boolean marked;

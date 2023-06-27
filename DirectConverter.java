@@ -1,18 +1,8 @@
-/*
-	Autor: Cesar Luis, 12539
-	Descripcion: Implementación de los algoritmos básicos de autómatas finitos y expresiones regulares.
-	Fecha: 14 de agosto de 2014
-*/
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-/**
- *
- * @author timothy
- */
 public class DirectConverter {
     private ArrayList<String> symbols;
     private Set<TreeNode> auxNodes;

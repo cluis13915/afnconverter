@@ -1,24 +1,8 @@
-/*
-	Autor: Cesar Luis, 12539
-	Descripcion: Implementación de los algoritmos básicos de autómatas finitos y expresiones regulares.
-	Fecha: 14 de agosto de 2014
-*/
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author timothy
- */
 public class MainOriginal {
-
     public static void main(String[] args) {
         /*
         String regexp = "(a|b)*abb", cad;
