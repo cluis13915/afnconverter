@@ -100,19 +100,21 @@ public class TreeNode {
         this.followPos = followPos;
     }
 
-    public String getFirstPosToString(){
+    public String getFirstPosToString() {
         String output = "";
         for (TreeNode node: firstPos)
             output += String.valueOf(node.getIndex())+ "  ";
         return output;
     }
-    public String getLastPosToString(){
+
+    public String getLastPosToString() {
         String output = "";
         for (TreeNode node: lastPos)
             output += String.valueOf(node.getIndex()) + "  ";
         return output;
     }
-    public String getFollowPosToString(){
+
+    public String getFollowPosToString() {
         String output = "";
         for (TreeNode node: followPos)
             output += String.valueOf(node.getIndex()) + "  ";

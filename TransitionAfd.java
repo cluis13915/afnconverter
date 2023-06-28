@@ -3,21 +3,23 @@ public class TransitionAfd {
     private StateAFD origin;
     private StateAFD destination;
 
-    public TransitionAfd(){}
-    public TransitionAfd (StateAFD origin, String symbol, StateAFD destination){
+    public TransitionAfd() {}
+
+    public TransitionAfd (StateAFD origin, String symbol, StateAFD destination) {
         this.origin = origin;
         this.symbol = symbol;
         this.destination = destination;
     }
 
-    public String getSymbol(){
+    public String getSymbol() {
         return symbol;
     }
-    public StateAFD getDestination(){
+
+    public StateAFD getDestination() {
         return destination;
     }
-    public StateAFD getOrigin(){
+
+    public StateAFD getOrigin() {
         return origin;
     }
-
 }

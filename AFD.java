@@ -10,7 +10,7 @@ public class AFD {
     private ArrayList<TransitionAfd> transitions;
 
     // Método Constructor
-    public AFD(){
+    public AFD() {
         symbols = new ArrayList();
         states = new ArrayList();
         finalStates = new ArrayList();
@@ -18,54 +18,54 @@ public class AFD {
     }
 
     // Metodos de entrada y acceso
-    public void setSymbols(ArrayList<String> symbols){
+    public void setSymbols(ArrayList<String> symbols) {
         this.symbols = symbols;
     }
 
-    public void setStates(ArrayList<StateAFD> states){
+    public void setStates(ArrayList<StateAFD> states) {
         this.states = states;
     }
 
-    public void setInitialState(StateAFD initialState){
+    public void setInitialState(StateAFD initialState) {
         this.initialState = initialState;
     }
 
-    public void setFinalStates(ArrayList<StateAFD> finalStates){
+    public void setFinalStates(ArrayList<StateAFD> finalStates) {
         this.finalStates = finalStates;
     }
 
-    public void setTransitions(ArrayList<TransitionAfd> transitions){
+    public void setTransitions(ArrayList<TransitionAfd> transitions) {
         this.transitions = transitions;
     }
 
-    public ArrayList<String> getSymbols(){
+    public ArrayList<String> getSymbols() {
         return symbols;
     }
 
-    public ArrayList<StateAFD> getStates(){
+    public ArrayList<StateAFD> getStates() {
         return states;
     }
 
-    public StateAFD getInitialState(){
+    public StateAFD getInitialState() {
         return initialState;
     }
 
-    public ArrayList<StateAFD> getFinalStates(){
+    public ArrayList<StateAFD> getFinalStates() {
         return finalStates;
     }
 
-    public ArrayList<TransitionAfd> getTransitions(){
+    public ArrayList<TransitionAfd> getTransitions() {
         return transitions;
     }
 
-    public void refreshAFD(){
+    public void refreshAFD() {
         this.searchInitialStates();
         this.searchFinalStates();
         this.findTransitionsForState();
     }
 
     // Metodo que encuentra las transiciones para cada estado
-    private void findTransitionsForState(){
+    private void findTransitionsForState() {
         for (StateAFD s1: states)
             for (StateAFD s2: states)
                 for (TransitionAfd t: transitions)
@@ -74,7 +74,7 @@ public class AFD {
     }
 
     // Metodo para encontrar los estados finales del AFD
-    private void searchInitialStates(){
+    private void searchInitialStates() {
         // Encontrar los estados finales
         for (StateAFD s1: states)
             if (s1.getIsInitial())
@@ -82,11 +82,11 @@ public class AFD {
     }
 
     // Metodo para encontrar los estados finales del AFD
-    private void searchFinalStates(){
+    private void searchFinalStates() {
         // Encontrar los estados finales
         for (StateAFD s1: states)
             for (TreeNode s2: s1.getNodes())
-                if (s2.getValue().equals("#")){
+                if (s2.getValue().equals("#")) {
                     s1.setIsfinal(true);
                     finalStates.add(s1);
                     break;
@@ -94,11 +94,11 @@ public class AFD {
     }
 
     // Metodos que retornan los atributos del AFN como tal
-    public int getInitialStateToString(){
+    public int getInitialStateToString() {
         return initialState.getLabel();
     }
 
-    public String getFinalStateToString(){
+    public String getFinalStateToString() {
         String output = "";
 
         for (StateAFD state: finalStates)
@@ -109,7 +109,7 @@ public class AFD {
     }
 
     // Metodo para obtener todas las transiciones
-    private ArrayList<String> getTransitionsToString(){
+    private ArrayList<String> getTransitionsToString() {
         ArrayList<String> output = new ArrayList<String>();
         String symbolTransitions;
 
@@ -130,7 +130,7 @@ public class AFD {
     }
 
     // Metodo para obtener la representacion del AFD
-    public ArrayList<String> afdDescription(){
+    public ArrayList<String> afdDescription() {
         ArrayList<String> output = new ArrayList();
         // Unimos los simbolos por una coma.
         output.add(String.join(",", symbols));
@@ -147,7 +147,7 @@ public class AFD {
 
     //************** SIMULACION DEL AFD **************
 
-    public boolean simulateAFD(String string){
+    public boolean simulateAFD(String string) {
         Simulater simulater = new Simulater();
         boolean accept = simulater.simulateAFD(string);
         return accept;
@@ -159,7 +159,7 @@ public class AFD {
     private class Simulater{
 
         // Metodo para simular el AFN
-        public boolean simulateAFD(String string){
+        public boolean simulateAFD(String string) {
             HashSet<StateAFD> currentStates = new HashSet();
             HashSet<StateAFD> auxStates  = new HashSet();
 
@@ -168,7 +168,7 @@ public class AFD {
             currentStates.addAll(this.move(auxStates, String.valueOf(string.charAt(0))));
 
             // Recorrer la cadena recibida
-            for (int i=1; i<string.length(); i++){
+            for (int i=1; i<string.length(); i++) {
                 //System.out.println("Evaluando " + String.valueOf(string.charAt(i)));
                 auxStates.clear();
                 auxStates.addAll(currentStates);    // Hacer una copia de los estados actuales para el ciclo FOR
@@ -179,7 +179,7 @@ public class AFD {
             }
 
             // Si alguno de los estados finales es de aceptacion, la cadena es aceptada por el AFN
-            for (StateAFD s2: currentStates){
+            for (StateAFD s2: currentStates) {
                 if (s2.getIsfinal())
                     return true;
             }
@@ -187,13 +187,13 @@ public class AFD {
         }
 
         //Hace las transiciiones de un conjunto de estados con un simbolo. Devuelve los estados alcanzados.
-        private HashSet<StateAFD> move(HashSet<StateAFD> states, String string){
+        private HashSet<StateAFD> move(HashSet<StateAFD> states, String string) {
             HashSet<StateAFD> moveResult = new HashSet();
             // Verificar para todas las transiciones del estado recibido
-            for (StateAFD s1: states){
-                for (int i = 0; i<s1.getTransitions().size(); i++){
+            for (StateAFD s1: states) {
+                for (int i = 0; i<s1.getTransitions().size(); i++) {
                     // Si hay una transicion con el simbolo recibido
-                    if (s1.getTransitions().get(i).getSymbol().equals(string)){
+                    if (s1.getTransitions().get(i).getSymbol().equals(string)) {
                         //System.out.println("Transición de " + string + " encontrada.");
                         moveResult.add(s1.getTransitions().get(i).getDestination());
                     }
@@ -232,11 +232,11 @@ public class AFD {
         ArrayList<StateAFD> g;
         int pointer = 0;
         boolean finish = false;
-        while (!finish){
+        while (!finish) {
             g = P.get(pointer);
-            for (StateAFD s: g){    // Para cada estado s en el grupo g
+            for (StateAFD s: g) {    // Para cada estado s en el grupo g
                 Ds = new ArrayList();
-                for (String symbol: symbols){      // Para cada simbolo a del alfabeto
+                for (String symbol: symbols) {      // Para cada simbolo a del alfabeto
                     // t = Transicion(s,a)
                     StateAFD t = new StateAFD();
                     for (TransitionAfd trans: s.getTransitions())
@@ -255,7 +255,7 @@ public class AFD {
             ArrayList<ArrayList<StateAFD>> K = new ArrayList();
             int i = 0;          // Sea i = 0
             // Mientras que la lista L no este vacia
-            while (!L.isEmpty()){
+            while (!L.isEmpty()) {
                 Ds = L.get(0);          // Tomar un conjunto Dx en la Lista L
                 K.add(new ArrayList());
                 K.get(i).add(auxL.get(0));        // Copiar el estado x correspondiente a Dx a un conjunto Ki
@@ -266,8 +266,8 @@ public class AFD {
                 ArrayList<ArrayList<ArrayList<StateAFD>>> aux = new ArrayList();
                 for (ArrayList<ArrayList<StateAFD>> jj: L)
                     aux.add(jj);
-                for (ArrayList<ArrayList<StateAFD>> Dy: aux){
-                    if (Dy.equals(Ds)){
+                for (ArrayList<ArrayList<StateAFD>> Dy: aux) {
+                    if (Dy.equals(Ds)) {
                         K.get(i).add(auxL.get(aux.indexOf(Dy)));    // Meter el estado y correspondiente a Dy a Ki
                         L.remove(Dy);           // Sacar a Dy de L
                         auxL.remove(auxL.get(aux.indexOf(Dy)));     // Eliminar tambien su estado correspondiente
@@ -278,10 +278,10 @@ public class AFD {
 
             // Si K0 != g entonces
             if (!K.isEmpty())
-                if (!K.get(0).equals(g)){
+                if (!K.get(0).equals(g)) {
                     int index = P.indexOf(g);
                     P.remove(g);        // Remover g de la particion P
-                    for (ArrayList<StateAFD> Ki: K){   // Ingresar todos los Ki en lugar de g en la particion P
+                    for (ArrayList<StateAFD> Ki: K) {   // Ingresar todos los Ki en lugar de g en la particion P
                         P.add(index, Ki);
                         index++;
                     }
@@ -300,21 +300,21 @@ public class AFD {
         // Paso 4: Para cada grupo J en la partición P agregar un estado nuevo al AFD
         StateAfdMinimized state;
         int i = 0;
-        for (ArrayList<StateAFD> J: P){
+        for (ArrayList<StateAFD> J: P) {
             // ...agregar un estado nuevo al AFD
             i++;
             state = new StateAfdMinimized(i, false, false);
             state.getStates().addAll(J);
 
-            for (StateAFD s: J){
+            for (StateAFD s: J) {
                 // El grupo J que contenga al estado inicial del AFD original generará el estado inicial del nuevo AFD
-                if (s.getIsInitial()){
+                if (s.getIsInitial()) {
                     state.setIsInitial(true);
                     break;
                 }
                 /* Cualquier grupo J que contenga estados de aceptación del AFD original generará un estado
                 de aceptación del AFD nuevo */
-                if (s.getIsfinal()){
+                if (s.getIsfinal()) {
                     state.setIsfinal(true);
                     break;
                 }
@@ -330,16 +330,16 @@ public class AFD {
 
 
         // Para cada estado del AFD minimizado...
-        for (StateAfdMinimized st1: afdMinimized.getStates()){
+        for (StateAfdMinimized st1: afdMinimized.getStates()) {
             // Para cada uno de los estados antiguos que componen el nuevo estado
-            for (StateAFD st11: st1.getStates()){
+            for (StateAFD st11: st1.getStates()) {
                 // Para cada uno de las transiciones que tiene dicho estado
-                for (TransitionAfd t: st11.getTransitions()){
+                for (TransitionAfd t: st11.getTransitions()) {
                     // Verificar para todos los simbolos
-                    for (String symbol: symbols){
+                    for (String symbol: symbols) {
                         // Buscar transiciones hacia los otros estados del AFD minimizado
-                        for (StateAfdMinimized st2: afdMinimized.getStates()){
-                            if (t.getSymbol().equals(symbol) && st2.getStates().contains(t.getDestination())){
+                        for (StateAfdMinimized st2: afdMinimized.getStates()) {
+                            if (t.getSymbol().equals(symbol) && st2.getStates().contains(t.getDestination())) {
                                 TransitionAfdMinimized transition = new TransitionAfdMinimized(st1, symbol, st2);
                                 if (!afdMinimized.thereIsTransition(transition))        // Si esa transicion ya esta, ya no se agrega
                                     afdMinimized.getTransitions().add(transition);

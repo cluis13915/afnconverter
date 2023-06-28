@@ -5,11 +5,12 @@ public class StateAFD extends SuperState{
     private boolean marked;
     private ArrayList<TransitionAfd> transitions;
 
-    public StateAFD(){
+    public StateAFD() {
         nodes = new ArrayList();
         transitions = new ArrayList();
     }
-    public StateAFD(int label, boolean isInitial, boolean isFinal){
+
+    public StateAFD(int label, boolean isInitial, boolean isFinal) {
         super.setLabel(label);
         super.setIsInitial(isInitial);
         super.setIsfinal(isFinal);
@@ -18,7 +19,7 @@ public class StateAFD extends SuperState{
         marked = false;
     }
 
-    public void addTransition(String symbol, StateAFD destination){
+    public void addTransition(String symbol, StateAFD destination) {
         TransitionAfd transition = new TransitionAfd(this, symbol, destination);
         transitions.add(transition);
     }
@@ -46,5 +47,4 @@ public class StateAFD extends SuperState{
     public void setTransitions(ArrayList<TransitionAfd> transitions) {
         this.transitions = transitions;
     }
-
 }

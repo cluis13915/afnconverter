@@ -1,34 +1,31 @@
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Stack;
 
 public class Tools {
-
     private File archivo;
+
     public Tools() {}
 
-    // M�todo generador del archivo de texto
+    // Metodo generador del archivo de texto
     public void generateFile(ArrayList<String> content, String fileName){
-        archivo = new File(fileName);	// Creacion del archivo
+        archivo = new File(fileName);   // Creacion del archivo
+
         try{
-            PrintWriter grabador = new PrintWriter(archivo);	//Instancia del grabador
+            PrintWriter grabador = new PrintWriter(archivo);    //Instancia del grabador
             for (String line : content)
                 grabador.println(line);
-            grabador.close();	//Cerrando el grabador
+            grabador.close();   //Cerrando el grabador
         }
         catch(Exception e){
             System.out.println("Error al crear el archivo de texto..!");
             //JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
+
     //Conversión de notación Infija a Postfija mediante uso de pilas
-
-
     public String postFix(String regexp){
-
         //Adicion de los puntos de concatenacion
         regexp = this.addConcatenation(regexp.replace(" ", ""));
         //Depurar la expresion algebraica
@@ -83,6 +80,7 @@ public class Tools {
         }
         return postfix;
     }
+
     //Depurar expresión algebraica
     private String depurar(String s) {
         s = s.replaceAll("\\s+", ""); //Elimina espacios en blanco
@@ -132,30 +130,4 @@ public class Tools {
         }
         return regexp;
     }
-
-    public void generateAFDImage(String dotPath, String fileInputPath, String fileOutputPath){
-        try {
-            //String dotPath = "C:\\Program Files (x86)\\graphviz 2.38\\release\\bin\\dot.exe";
-            //String fileInputPath = "C:\\Users\\timothy\\Documents\\UNIVERSITY\\CYCLES VI\\COMPILADORES I\\Laboratorios\\Laboratorio 5\\AfnConverter\\src\\afnconverter\\grafo1.txt";
-            //String fileOutputPath = "C:\\Users\\timothy\\Documents\\UNIVERSITY\\CYCLES VI\\COMPILADORES I\\Laboratorios\\Laboratorio 5\\AfnConverter\\src\\afnconverter\\grafo1.jpg";
-
-            String tParam = "-Tjpg";
-            String tOParam = "-o";
-
-            String[] cmd = new String[5];
-            cmd[0] = dotPath;
-            cmd[1] = tParam;
-            cmd[2] = fileInputPath;
-            cmd[3] = tOParam;
-            cmd[4] = fileOutputPath;
-
-            Runtime rt = Runtime.getRuntime();
-            rt.exec(cmd);
-        }
-        catch (Exception ex) {
-            System.out.println("Ocurrió un error en la generacion del grafo..!");
-            ex.printStackTrace();
-        }
-        finally {}
-  }
 }

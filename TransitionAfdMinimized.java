@@ -3,24 +3,27 @@ public class TransitionAfdMinimized {
     private StateAfdMinimized origin;
     private StateAfdMinimized destination;
 
-    public TransitionAfdMinimized(){}
-    public TransitionAfdMinimized (StateAfdMinimized origin, String symbol, StateAfdMinimized destination){
+    public TransitionAfdMinimized() {}
+
+    public TransitionAfdMinimized (StateAfdMinimized origin, String symbol, StateAfdMinimized destination) {
         this.origin = origin;
         this.symbol = symbol;
         this.destination = destination;
     }
 
-    public String getSymbol(){
+    public String getSymbol() {
         return symbol;
     }
-    public StateAfdMinimized getDestination(){
+
+    public StateAfdMinimized getDestination() {
         return destination;
     }
-    public StateAfdMinimized getOrigin(){
+
+    public StateAfdMinimized getOrigin() {
         return origin;
     }
-    public String toString(){
+
+    public String toString() {
         return "("+ String.valueOf(origin.getLabel()) + ", " + symbol + ", " + String.valueOf(destination.getLabel()) + ")";
     }
-
 }

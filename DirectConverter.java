@@ -9,12 +9,12 @@ public class DirectConverter {
     private String treeValues;
     private ArrayList<TreeNode> nodes;
 
-    public DirectConverter(){
+    public DirectConverter() {
         nodes = new ArrayList();
     }
 
     // Metodo privado que genera el arbol sintactico de la expresion. Devuelve la raiz del arbol.
-    private TreeNode generateSintaxTree(String regexp){
+    private TreeNode generateSintaxTree(String regexp) {
         int index = 0;
         Stack<TreeNode> subTrees = new Stack();
         TreeNode newNode, auxNode1;
@@ -24,19 +24,19 @@ public class DirectConverter {
         this.searchSymbols(regexp);
 
         // Paso 2: Generacion del arbol sintactico
-        for (String s: regexp.split("")){
-            if (symbols.contains(s) || s.equals("&")){
+        for (String s: regexp.split("")) {
+            if (symbols.contains(s) || s.equals("&")) {
                 index++;
                 subTrees.push(new TreeNode(s, index));
             }
-            else if(s.equals(".") || s.equals("+")){
+            else if(s.equals(".") || s.equals("+")) {
                 newNode = new TreeNode(s, -1);
                 auxNode1 = subTrees.pop();
                 newNode.setLeftNode(subTrees.pop());
                 newNode.setRightNode(auxNode1);
                 subTrees.push(newNode);
             }
-            else if(s.equals("*")){
+            else if(s.equals("*")) {
                 newNode = new TreeNode(s, -1);
                 newNode.setLeftNode(subTrees.pop());
                 subTrees.push(newNode);
@@ -55,13 +55,13 @@ public class DirectConverter {
         findComponentsNodes(node.getRightNode());      // Recorrer hoja derecha
 
         // Propiedades de un nodo epsilon
-        if (node.getValue().equals("&")){
+        if (node.getValue().equals("&")) {
             node.setNullable(true);
             node.setFirstPos(null);
             node.setLastPos(null);
         }
         // Propiedades de un nodo con simbolo
-        else if (symbols.contains(node.getValue())){
+        else if (symbols.contains(node.getValue())) {
             node.setNullable(false);
             // Conjunto fistpos y lastpos para el nodo
             auxNodes = new HashSet();
@@ -70,7 +70,7 @@ public class DirectConverter {
             node.setLastPos(auxNodes);
         }
         // Propiedades de un nodo OR
-        else if (node.getValue().equals("+")){
+        else if (node.getValue().equals("+")) {
             node.setNullable(this.isNullable(node.getLeftNode()) || this.isNullable(node.getRightNode()));
             // Conjunto firstpos para el nodo
             auxNodes = new HashSet();
@@ -84,10 +84,10 @@ public class DirectConverter {
             node.setLastPos(auxNodes);
         }
         // Propiedades de un nodo AND
-        else if (node.getValue().equals(".")){
+        else if (node.getValue().equals(".")) {
             node.setNullable(this.isNullable(node.getLeftNode()) && this.isNullable(node.getRightNode()));
             // Conjunto fistpos para el nodo
-            if (this.isNullable(node.getLeftNode())){
+            if (this.isNullable(node.getLeftNode())) {
                 auxNodes = new HashSet();
                 auxNodes.addAll(node.getLeftNode().getFirstPos());
                 auxNodes.addAll(node.getRightNode().getFirstPos());
@@ -96,7 +96,7 @@ public class DirectConverter {
             else
                 node.setFirstPos(node.getLeftNode().getFirstPos());
             // Conjunto lastpos para el nodo
-            if (this.isNullable(node.getRightNode())){
+            if (this.isNullable(node.getRightNode())) {
                 auxNodes = new HashSet();
                 auxNodes.addAll(node.getLeftNode().getLastPos());
                 auxNodes.addAll(node.getRightNode().getLastPos());
@@ -105,7 +105,7 @@ public class DirectConverter {
             else
                 node.setLastPos(node.getRightNode().getLastPos());
         }
-        else if (node.getValue().equals("*")){
+        else if (node.getValue().equals("*")) {
             node.setFirstPos(node.getLeftNode().getFirstPos());
             node.setLastPos(node.getLeftNode().getLastPos());
         }
@@ -116,13 +116,13 @@ public class DirectConverter {
         if (node == null)   // Si es un nodo final
             return;
 
-        if (node.getValue().equals(".")){   // FollowPos para un nodo AND
-            for (TreeNode lastPos: node.getLeftNode().getLastPos()){
+        if (node.getValue().equals(".")) {   // FollowPos para un nodo AND
+            for (TreeNode lastPos: node.getLeftNode().getLastPos()) {
                 lastPos.setFollowPos(node.getRightNode().getFirstPos());
             }
         }
-        else if (node.getValue().equals("*")){  // FollowPos para un nodo OR
-            for (TreeNode lastPos: node.getLeftNode().getFirstPos()){
+        else if (node.getValue().equals("*")) {  // FollowPos para un nodo OR
+            for (TreeNode lastPos: node.getLeftNode().getFirstPos()) {
                 lastPos.getFollowPos().addAll(node.getLeftNode().getLastPos());
             }
         }
@@ -132,13 +132,13 @@ public class DirectConverter {
     }
 
     // Metodo para verificar si un nodo es Nullable
-    private boolean isNullable(TreeNode node){
+    private boolean isNullable(TreeNode node) {
         if (node.getValue().equals("*") || node.getValue().equals("&")) // es nullable solo si es un * o un &
             return true;
         return false;
     }
 
-    public AFD convert(String regexp){
+    public AFD convert(String regexp) {
         TreeNode root = this.generateSintaxTree(regexp);    // Generate Sintax Tree
         this.findComponentsNodes(root);     // For each Sintax Tree node, find firstPos and last Pos
         this.findFollowPos(root);       // For each Sintax Tree node, find followPos
@@ -159,19 +159,19 @@ public class DirectConverter {
         symbols.remove("#");
         boolean thereIsUnmarked = true;
         S = Dstates.get(0);
-        while (thereIsUnmarked){     // there is an unmarked state S in Dstates
+        while (thereIsUnmarked) {     // there is an unmarked state S in Dstates
             S.setMarked(true);      // mark S
-            for (String a: symbols){        // for each imput symbol a
+            for (String a: symbols) {        // for each imput symbol a
                 // let U be the union of followpos (p) for all p in S that correspond to a
                 U = new StateAFD(label+1,false,false);
-                for (TreeNode node: S.getNodes()){
-                    if (node.getValue().equals(a)){
+                for (TreeNode node: S.getNodes()) {
+                    if (node.getValue().equals(a)) {
                         U.getNodes().addAll(node.getFollowPos());
                     }
                 }
                 // if U is not in Dstates
                 StateAFD auxState = this.contain(U, Dstates);
-                if (auxState == null){
+                if (auxState == null) {
                     label++;
                     Dstates.add(U);
                 }
@@ -183,8 +183,8 @@ public class DirectConverter {
 
             // Search for a new unmarked state in Dstates
             thereIsUnmarked = false;
-            for (StateAFD state: Dstates){
-                if (!state.isMarked()){
+            for (StateAFD state: Dstates) {
+                if (!state.isMarked()) {
                     S = state;
                     thereIsUnmarked = true;
                     break;
@@ -204,8 +204,8 @@ public class DirectConverter {
 
     }
 
-    private StateAFD contain(StateAFD state, ArrayList<StateAFD> Dstates){
-        for (StateAFD s: Dstates){
+    private StateAFD contain(StateAFD state, ArrayList<StateAFD> Dstates) {
+        for (StateAFD s: Dstates) {
             if (s.getNodes().containsAll(state.getNodes()) && state.getNodes().containsAll(s.getNodes()))
                 return s;
         }
@@ -230,7 +230,7 @@ public class DirectConverter {
         System.out.println("    FirstPos:\n\t\t" + node.getFirstPosToString());
         System.out.println("    LastPos:\n\t\t" + node.getLastPosToString());
 
-        if (symbols.contains(node.getValue())){
+        if (symbols.contains(node.getValue())) {
             //nodes.add(node);
             System.out.println("    FollowPos:\n\t\t" + node.getFollowPosToString());
         }
@@ -239,7 +239,7 @@ public class DirectConverter {
         PreOrder_Method(node.getRightNode());   // recorre subarbol derecho
     }
 
-    private void searchSymbols(String regexp){
+    private void searchSymbols(String regexp) {
         String specialChars = "*+.&";
         symbols = new ArrayList();
         // Simbolos del alfabeto
@@ -247,5 +247,4 @@ public class DirectConverter {
             if (!specialChars.contains(s) && !symbols.contains(s))
                 symbols.add(s);
     }
-
 }
