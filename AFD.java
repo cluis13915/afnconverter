@@ -3,7 +3,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AFD {
-
     private ArrayList<String> symbols;
     private ArrayList<StateAFD> states;
     private StateAFD initialState;
@@ -208,7 +207,7 @@ public class AFD {
      * ALGORITMO DE HPCROFT PARA LA MINIMIZACION DEL AFD
      =============================================================================*/
 
-    public AFDMinimized minimizeAFD(){
+    public AFDMinimized minimizeAFD() {
         ArrayList<ArrayList<StateAFD>> P = new ArrayList();
         ArrayList<ArrayList<StateAFD>> Ds;
         ArrayList<ArrayList<ArrayList<StateAFD>>> L = new ArrayList();
@@ -356,4 +355,39 @@ public class AFD {
         return afdMinimized;    // Retorno del AFD minimizado
     }
 
+    public String convertIntToAscii(int code) {
+        return String.valueOf((char) (code + 64));
+    }
+
+    public ArrayList<String> toGLD() {
+        ArrayList<String> output = new ArrayList<String>();
+        String letra1 = "A", letra2 = "A";
+        String statesString = "";
+
+        // Generamos las letras para los estados.
+        for (StateAFD state: states) {
+            letra1 = this.convertIntToAscii(state.getLabel());
+            statesString += (statesString.length()>0) ? ("," + letra1) : letra1;
+        }
+
+        output.add(statesString);
+        output.add(String.join(",", symbols));
+
+        if (initialState != null) {
+            output.add(this.convertIntToAscii(initialState.getLabel()));
+        }
+
+        for (int i = 0; i<states.size(); i++) {
+            for (TransitionAfd transition: transitions) {
+                if (transition.getOrigin().getLabel() == states.get(i).getLabel()) {
+                    letra1 = this.convertIntToAscii(transition.getOrigin().getLabel());
+                    letra2 = this.convertIntToAscii(transition.getDestination().getLabel());
+
+                    output.add(String.valueOf(letra1) + "->" + transition.getSymbol() + String.valueOf(letra2));
+                }
+            }
+        }
+
+        return output;
+    }
 }

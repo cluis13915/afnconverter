@@ -1,9 +1,6 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
@@ -56,7 +53,7 @@ public class Main {
         if (modoEjecucion.equals("-afd")) {
             description = afd.afdDescription();
 
-            // Impresion del AFD construido directamente
+            // Impresion del AFD
             System.out.println("Descripcion del AFD:");
             for (String s: description)
                 System.out.println(s);
@@ -73,7 +70,21 @@ public class Main {
 
         // Generar GLD
         else if (modoEjecucion.equals("-gld")) {
-            System.out.println("Pendiente de implementar.");
+            description = afd.toGLD();
+
+            // Impresion del GLD
+            System.out.println("Descripcion del GLD:");
+            for (String s: description)
+                System.out.println(s);
+
+            try {
+                // Generar el archivo de descripcion del GLD
+                tool1.generateFile(description, archivoSalida);
+            }
+            catch (Exception err) {
+                System.out.println("Ocurrió un error en la generacion del archivo");
+                System.exit(0);
+            }
         }
 
         // Minimizar AFD
