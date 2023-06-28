@@ -44,14 +44,14 @@ public class Main {
         AFDMinimized afdMinimized;
 
         Tools tool1 = new Tools();
-        String cuerda = "", acepta;
+        String cuerda = "";
         boolean accept;
         ArrayList<String> description;
 
-        regex = tool1.postFix(regex);
+        String regexPostfix = tool1.postFix(regex);
 
         // Generar AFD
-        afd = converter.convert(regex);
+        afd = converter.convert(regexPostfix);
 
         if (modoEjecucion.equals("-afd")) {
             description = afd.afdDescription();
@@ -99,6 +99,9 @@ public class Main {
 
         // Evaluar cuerdas
         else if (modoEjecucion.equals("-eval")) {
+            // Java usa un | para aplicar un OR.
+            regex = regex.replace("+", "|");
+
             Scanner inputReader = new Scanner(System.in);
 
             while (true) {
@@ -116,9 +119,10 @@ public class Main {
                 cuerda = cuerda.replace(" ", "");
 
                 // Simulacion del AFD construido directamente
-                accept = afd.simulateAFD(cuerda);
-                acepta = accept ? "SI": "NO";
-                System.out.println("Acepta el AFD la cuerda " + cuerda + "? " + acepta);
+                // accept = afd.simulateAFD(cuerda);
+                accept = cuerda.matches(regex);
+
+                System.out.println("Acepta el AFD la cuerda " + cuerda + "? " + (accept ? "SI" : "NO"));
             }
         }
 
