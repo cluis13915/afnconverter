@@ -110,7 +110,7 @@ public class Main {
 
         // Evaluar cuerdas
         else if (modoEjecucion.equals("-eval")) {
-            // Java usa un | para aplicar un OR.
+            // Java usa un "|" para aplicar un OR, por eso sustituimos los "+" por un "|".
             regex = regex.replace("+", "|");
 
             Scanner inputReader = new Scanner(System.in);
@@ -133,7 +133,7 @@ public class Main {
                 // accept = afd.simulateAFD(cuerda);
                 accept = cuerda.matches(regex);
 
-                System.out.println("Acepta el AFD la cuerda " + cuerda + "? " + (accept ? "SI" : "NO"));
+                System.out.println("Acepta el Regex la cuerda " + cuerda + "? " + (accept ? "SI" : "NO"));
             }
         }
 
